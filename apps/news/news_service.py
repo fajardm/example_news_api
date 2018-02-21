@@ -1,4 +1,5 @@
 from .news_model import News
+from datetime import datetime
 from helpers.database import db
 
 
@@ -49,7 +50,9 @@ def destroy_news(id):
     doc = News.query.get(id)
 
     if doc:
-        db.session.delete(doc)
+        doc.deleted_at = datetime.utcnow()
+
+        db.session.add(doc)
         db.session.commit()
 
     return doc
