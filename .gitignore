@@ -102,3 +102,4 @@ ENV/
 
 # app
 .idea
+*.db
