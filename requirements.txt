@@ -1,0 +1,6 @@
+flask
+Flask-WTF
+pymysql
+Flask-SQLAlchemy
+Flask-Migrate
+flask-marshmallow
