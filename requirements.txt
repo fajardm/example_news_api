@@ -4,3 +4,5 @@ pymysql
 Flask-SQLAlchemy
 Flask-Migrate
 flask-marshmallow
+pytest
+Faker

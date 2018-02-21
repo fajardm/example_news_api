@@ -1,4 +1,4 @@
-from app.factory import create_app
+from apps.factory import create_app
 
 app = create_app()
 

@@ -8,5 +8,5 @@ class News(db.Model):
     description = db.Column(db.TEXT, nullable=False)
     status = db.Column(db.Enum('draft', 'publish'), nullable=False, default='draft')
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
     deleted_at = db.Column(db.DateTime, nullable=True)

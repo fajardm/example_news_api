@@ -1,4 +1,4 @@
-from app.news.news_controller import module_news
+from apps.news.news_controller import module_news
 from flask import Flask, jsonify
 from flask_migrate import Migrate
 from helpers.database import db
@@ -6,10 +6,10 @@ from helpers.marshmallow import ma
 
 
 def create_app(config=None):
-    app = Flask('app')
+    app = Flask('apps')
 
     app.config.update(config or {})
-    app.config.from_pyfile('config.cfg', silent=True)
+    app.config.from_pyfile('../config.cfg', silent=True)
 
     db.init_app(app)
     Migrate(app, db)
