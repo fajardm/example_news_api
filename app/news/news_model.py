@@ -1,6 +1,5 @@
 from datetime import datetime
 from helpers.database import db
-from helpers.marshmallow import ma
 
 
 class News(db.Model):
@@ -11,8 +10,3 @@ class News(db.Model):
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     deleted_at = db.Column(db.DateTime, nullable=True)
-
-
-class NewsSchema(ma.ModelSchema):
-    class Meta:
-        model = News
