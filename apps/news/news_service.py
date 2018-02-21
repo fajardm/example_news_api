@@ -1,58 +1,42 @@
-from .news_model import News
-from datetime import datetime
-from helpers.database import db
+from .news_repository import NewsRepository
 
 
 def news_list(**criteria):
-    doc = News.query
     if criteria['status']:
         if criteria['status'] == 'deleted':
-            doc = doc.filter(News.deleted_at.isnot(None))
+            return NewsRepository.get_all(deleted_at=not None).get_doc()
         else:
-            doc = doc.filter(News.status == criteria['status'])
+            return NewsRepository.get_all(status=criteria['status']).get_doc()
 
-    doc = doc.all()
-
-    return doc
+    return NewsRepository.get_all().get_doc()
 
 
 def create_news(**data):
-    doc = News(
+    doc = NewsRepository(
         title=data['title'],
         description=data['description'],
         status=data['status'] if data['status'] else 'draft'
-    )
-    db.session.add(doc)
-    db.session.commit()
+    ).save().get_doc()
     return doc
 
 
 def show_news(id):
-    doc = News.query.get(id)
-    return doc
+    repo = NewsRepository.get_by_id(id)
+    return repo.get_doc()
 
 
 def update_news(id, **data):
-    doc = News.query.get(id)
+    repo = NewsRepository.get_by_id(id)
 
-    if doc:
-        doc.title = data['title']
-        doc.description = data['description']
-        doc.status = data['status'] if data['status'] else doc.status
+    if repo.get_doc():
+        repo.get_doc().title = data['title']
+        repo.get_doc().description = data['description']
+        repo.get_doc().status = data['status'] if data['status'] else doc.status
+        repo.save()
 
-        db.session.add(doc)
-        db.session.commit()
-
-    return doc
+    return repo.get_doc()
 
 
 def destroy_news(id):
-    doc = News.query.get(id)
-
-    if doc:
-        doc.deleted_at = datetime.utcnow()
-
-        db.session.add(doc)
-        db.session.commit()
-
-    return doc
+    repo = NewsRepository.destroy_by_id(id)
+    return repo.get_doc()
