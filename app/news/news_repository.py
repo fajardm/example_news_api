@@ -2,8 +2,8 @@ from .news_model import News
 from helpers.database import db
 
 
-def get_all():
-    res = News.query.all()
+def get_all(criteria, order):
+    res = News.query.filter(*criteria).order_by(*order).all()
     return res
 
 
