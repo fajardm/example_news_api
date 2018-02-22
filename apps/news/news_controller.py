@@ -19,8 +19,9 @@ module_news = Blueprint('module_news', __name__)
 @apiSuccess {DateTime} created_at Created date of the news.
 @apiSuccess {Text} description Description of the news.
 @apiSuccess {Integer} id Id of the news.
-@apiSuccess {String} name Name of the news.
-@apiSuccess {String} name Name of the news.
+@apiSuccess {String} status Status of the news (draft, publish).
+@apiSuccess {String} title Title of the news.
+@apiSuccess {Array} topics Array topic id of the news.
 @apiSuccess {DateTime} updated_at Updated date of the news.
 
 @apiSuccessExample {json} Success-Response:
@@ -34,7 +35,9 @@ module_news = Blueprint('module_news', __name__)
                 "id": 1,
                 "status": "draft",
                 "title": "indonesia election",
-                "topics": [],
+                "topics": [
+                    145
+                ],
                 "updated_at": "2018-02-22T14:00:02+00:00"
             },
             {...}
@@ -60,23 +63,26 @@ def get_index():
 @apiExample {curl} Example usage:
     curl -i \
         -H "Content-Type: application/json" \
-        -X POST -d "{'title': 'indonesia election', 'description': 'indonesia election', 'topics': [4711]}" 
+        -X POST -d "{'title': 'indonesia election', 'description': 'indonesia election', 'topics': [145]}" 
         http://localhost/news
 
 @apiParam (Body) {String} title Title of the news.
 @apiParam (Body) {String} description Description of the news.
+@apiParam (Body) {Array} topics Array topic id of the news.
 
 @apiParamExample (Body) {json} Request-Body-Example:
     {
         "title": "indonesia election",
         "description": "indonesia election",
+        "topics": [145]
     }
 
 @apiSuccess {DateTime} created_at Created date of the news.
 @apiSuccess {Text} description Description of the news.
 @apiSuccess {Integer} id Id of the news.
-@apiSuccess {String} name Name of the news.
-@apiSuccess {String} name Name of the news.
+@apiSuccess {String} status Status of the news (draft, publish).
+@apiSuccess {String} title Title of the news.
+@apiSuccess {Array} topics Array topic id of the news.
 @apiSuccess {DateTime} updated_at Updated date of the news.
 
 @apiSuccessExample {json} Success-Response:
@@ -89,7 +95,9 @@ def get_index():
             "id": 3744,
             "status": "draft",
             "title": "indonesia election",
-            "topics": [],
+            "topics": [
+                145
+            ],
             "updated_at": "2018-02-22T14:00:02+00:00"
         },
         "status": "success"
@@ -141,8 +149,9 @@ def post_news():
 @apiSuccess {DateTime} created_at Created date of the news.
 @apiSuccess {Text} description Description of the news.
 @apiSuccess {Integer} id Id of the news.
-@apiSuccess {String} name Name of the news.
-@apiSuccess {String} name Name of the news.
+@apiSuccess {String} status Status of the news (draft, publish).
+@apiSuccess {String} title Title of the news.
+@apiSuccess {Array} topics Array topic id of the news.
 @apiSuccess {DateTime} updated_at Updated date of the news.
 
 @apiSuccessExample {json} Success-Response:
@@ -155,7 +164,9 @@ def post_news():
             "id": 3744,
             "status": "draft",
             "title": "indonesia election",
-            "topics": [],
+            "topics": [
+                145
+            ],
             "updated_at": "2018-02-22T14:00:02+00:00"
         },
         "status": "success"
@@ -210,6 +221,7 @@ def get_news(news_id):
 @apiSuccess {Integer} id Id of the news.
 @apiSuccess {String} status Status of the news (draft, publish).
 @apiSuccess {String} title Title of the news.
+@apiSuccess {Array} topics Array topic id of the news.
 @apiSuccess {DateTime} updated_at Updated date of the news.
 
 @apiSuccessExample {json} Success-Response:
@@ -222,7 +234,9 @@ def get_news(news_id):
             "id": 3744,
             "status": "draft",
             "title": "indonesia election",
-            "topics": [],
+            "topics": [
+                145,
+            ],
             "updated_at": "2018-02-22T14:00:02+00:00"
         },
         "status": "success"
