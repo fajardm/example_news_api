@@ -18,10 +18,8 @@ class NewsRepository:
         return self._doc
 
     @classmethod
-    def get_all(cls, **criterion):
-        obj = cls()
-        obj._doc = News.query.filter_by(**criterion).all()
-        return obj
+    def query(cls):
+        return News.query
 
     @classmethod
     def get_by_id(cls, id):

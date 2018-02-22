@@ -1,14 +1,14 @@
-from .news_repository import NewsRepository
+from .news_repository import NewsRepository, News
 
 
 def news_list(**criteria):
     if criteria['status']:
         if criteria['status'] == 'deleted':
-            return NewsRepository.get_all(deleted_at=not None).get_doc()
+            return NewsRepository.query().filter(News.deleted_at.isnot(None)).all()
         else:
-            return NewsRepository.get_all(status=criteria['status']).get_doc()
+            return NewsRepository.query().filter(News.status == criteria['status']).all()
 
-    return NewsRepository.get_all().get_doc()
+    return NewsRepository.query().filter(News.deleted_at.is_(None)).all()
 
 
 def create_news(**data):

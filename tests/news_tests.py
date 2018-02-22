@@ -2,6 +2,7 @@ import random
 import unittest
 from apps.news.news_model import News
 from apps.factory import create_app
+from datetime import datetime
 from faker import Faker
 from flask import json
 from helpers.database import db
@@ -20,12 +21,37 @@ class NewsTestCase(unittest.TestCase):
         News.query.delete()
 
     def test_should_success_get_index(self):
+        doc = News(
+            title=fake.sentence(nb_words=6, variable_nb_words=True, ext_word_list=None),
+            description=fake.text(),
+            status=random.choice(['draft', 'publish'])
+        )
+        db.session.add(doc)
+        db.session.commit()
+
+        doc = News(
+            title=fake.sentence(nb_words=6, variable_nb_words=True, ext_word_list=None),
+            description=fake.text(),
+            deleted_at=datetime.utcnow()
+        )
+        db.session.add(doc)
+        db.session.commit()
+
         res = self.app.get('/news')
 
         obj = json.loads(res.data)
 
         assert res.status_code == 200
         assert obj['status'] == 'success'
+        assert len(obj['data']) == 1
+
+        res2 = self.app.get('/news?status=deleted')
+
+        obj2 = json.loads(res2.data)
+
+        assert res2.status_code == 200
+        assert obj2['status'] == 'success'
+        assert len(obj2['data']) == 1
 
     def test_should_success_post_news(self):
         res = self.app.post('/news', data=dict(
@@ -135,13 +161,13 @@ class NewsTestCase(unittest.TestCase):
         assert obj['status'] == 'error'
         assert obj['error'] == 'not found'
 
-        # res2 = self.app.delete('/news/invalid')
-        #
-        # obj2 = json.loads(res.data)
-        #
-        # assert res2.status_code == 404
-        # assert obj2['status'] == 'error'
-        # assert obj2['error'] == 'not found'
+        res2 = self.app.delete('/news/invalid')
+
+        obj2 = json.loads(res.data)
+
+        assert res2.status_code == 404
+        assert obj2['status'] == 'error'
+        assert obj2['error'] == 'not found'
 
 
 if __name__ == '__main__':
