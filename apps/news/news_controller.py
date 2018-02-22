@@ -10,8 +10,7 @@ module_news = Blueprint('module_news', __name__)
 @module_news.route('', methods=['GET'])
 def get_index():
     schema = NewsSchema(many=True)
-
-    doc_list = news_list(status=request.args.get('status'))
+    doc_list = news_list(status=request.args.get('status'), topics=request.args.getlist('topics'))
 
     return jsonify(status='success', data=schema.dump(doc_list).data)
 

@@ -11,6 +11,14 @@ from helpers.database import db
 fake = Faker()
 
 
+def create_topic(name):
+    topic = Topics(name=name)
+    db.session.add(topic)
+    db.session.commit()
+
+    return topic
+
+
 class NewsTestCase(unittest.TestCase):
     def setUp(self):
         app = create_app()
@@ -23,20 +31,25 @@ class NewsTestCase(unittest.TestCase):
         Topics.query.delete()
 
     def test_should_success_get_index(self):
-        doc = News(
+        topic1 = create_topic('topic1')
+        topic2 = create_topic('topic2')
+
+        doc1 = News(
             title=fake.sentence(nb_words=6, variable_nb_words=True, ext_word_list=None),
             description=fake.text(),
             status=random.choice(['draft', 'publish'])
         )
-        db.session.add(doc)
+        doc1.topics.append(topic1)
+        db.session.add(doc1)
         db.session.commit()
 
-        doc = News(
+        doc2 = News(
             title=fake.sentence(nb_words=6, variable_nb_words=True, ext_word_list=None),
             description=fake.text(),
             deleted_at=datetime.utcnow()
         )
-        db.session.add(doc)
+        doc2.topics.append(topic2)
+        db.session.add(doc2)
         db.session.commit()
 
         res = self.app.get('/news')
@@ -45,7 +58,7 @@ class NewsTestCase(unittest.TestCase):
 
         assert res.status_code == 200
         assert obj['status'] == 'success'
-        assert len(obj['data']) == 1
+        assert len(obj['data']) == 2
 
         res2 = self.app.get('/news?status=deleted')
 
@@ -54,6 +67,14 @@ class NewsTestCase(unittest.TestCase):
         assert res2.status_code == 200
         assert obj2['status'] == 'success'
         assert len(obj2['data']) == 1
+
+        res3 = self.app.get('/news?topics=topic1')
+
+        obj3 = json.loads(res3.data)
+
+        assert res3.status_code == 200
+        assert obj3['status'] == 'success'
+        assert len(obj3['data']) == 1
 
     def test_should_success_post_news(self):
         topic = Topics(name='topic 1')

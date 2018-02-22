@@ -1,15 +1,19 @@
 from .news_repository import NewsRepository, News
-from apps.topics.topics_repository import TopicsRepository
+from apps.topics.topics_repository import TopicsRepository, Topics
 
 
 def news_list(**criteria):
+    temp_query = NewsRepository.query()
     if criteria['status']:
         if criteria['status'] == 'deleted':
-            return NewsRepository.query().filter(News.deleted_at.isnot(None)).all()
+            temp_query = temp_query.filter(News.deleted_at.isnot(None))
         else:
-            return NewsRepository.query().filter(News.status == criteria['status']).all()
+            temp_query = temp_query.filter(News.status == criteria['status'])
 
-    return NewsRepository.query().filter(News.deleted_at.is_(None)).all()
+    if criteria['topics']:
+        temp_query = temp_query.filter(News.topics.any(Topics.name.in_(criteria['topics'])))
+
+    return temp_query.all()
 
 
 def create_news(**data):
