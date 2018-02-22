@@ -104,4 +104,5 @@ ENV/
 .idea
 *.db
 config.cfg
-apidoc
+apidoc/*
+!Dockerfile

@@ -1,11 +1,19 @@
 # Table of Contents
 1. [Demo](#demo)
-2. [Dockerized](#dockerized)
-3. [Migration](#migration)
-4. [Generate Apidoc](generate-apidoc)
+2. [How to](#how-to)
+3. [Dockerized](#dockerized)
+4. [Migration](#migration)
+5. [Generate Apidoc](generate-apidoc)
 
 ## Demo
 Comming soon
+
+## How to
+1. Run apidoc
+2. Run dockerized
+3. Run migration
+4. API host `http://localhost:3000`
+5. Apidoc host `http://localhost:4000`
 
 ## Dockerized
 1. Configuration

@@ -22,3 +22,8 @@ services:
     restart: always
     expose:
       - "3000"
+  apidoc:
+    build: ./apidoc
+    ports:
+      - "4000:80"
+    image: "apidoc:apidoc"
