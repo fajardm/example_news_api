@@ -6,6 +6,43 @@ from werkzeug.datastructures import MultiDict
 
 module_news = Blueprint('module_news', __name__)
 
+"""
+@api {get} /news List News
+@apiName ListNews
+@apiGroup News
+
+@apiExample {curl} Example usage:
+    curl -i \
+        -H "Content-Type: application/json" \
+        -X GET -d http://localhost/news
+
+@apiSuccess {DateTime} created_at Created date of the news.
+@apiSuccess {Text} description Description of the news.
+@apiSuccess {Integer} id Id of the news.
+@apiSuccess {String} name Name of the news.
+@apiSuccess {String} name Name of the news.
+@apiSuccess {DateTime} updated_at Updated date of the news.
+
+@apiSuccessExample {json} Success-Response:
+    HTTP/1.1 200 OK
+    {
+        "data": [
+            {
+                "created_at": "2018-02-22T14:00:02+00:00",
+                "deleted_at": null,
+                "description": "indonesia election",
+                "id": 1,
+                "status": "draft",
+                "title": "indonesia election",
+                "topics": [],
+                "updated_at": "2018-02-22T14:00:02+00:00"
+            },
+            {...}
+        ],
+        "status": "success"
+    }
+"""
+
 
 @module_news.route('', methods=['GET'])
 def get_index():
@@ -13,6 +50,51 @@ def get_index():
     doc_list = news_list(status=request.args.get('status'), topics=request.args.getlist('topics'))
 
     return jsonify(status='success', data=schema.dump(doc_list).data)
+
+
+"""
+@api {post} /news Create News
+@apiName PostNews
+@apiGroup News
+
+@apiExample {curl} Example usage:
+    curl -i \
+        -H "Content-Type: application/json" \
+        -X POST -d "{'title': 'indonesia election', 'description': 'indonesia election', 'topics': [4711]}" 
+        http://localhost/news
+
+@apiParam (Body) {String} title Title of the news.
+@apiParam (Body) {String} description Description of the news.
+
+@apiParamExample (Body) {json} Request-Body-Example:
+    {
+        "title": "indonesia election",
+        "description": "indonesia election",
+    }
+
+@apiSuccess {DateTime} created_at Created date of the news.
+@apiSuccess {Text} description Description of the news.
+@apiSuccess {Integer} id Id of the news.
+@apiSuccess {String} name Name of the news.
+@apiSuccess {String} name Name of the news.
+@apiSuccess {DateTime} updated_at Updated date of the news.
+
+@apiSuccessExample {json} Success-Response:
+    HTTP/1.1 201 OK
+    {
+        "data": {
+            "created_at": "2018-02-22T14:00:02+00:00",
+            "deleted_at": null,
+            "description": "indonesia election",
+            "id": 3744,
+            "status": "draft",
+            "title": "indonesia election",
+            "topics": [],
+            "updated_at": "2018-02-22T14:00:02+00:00"
+        },
+        "status": "success"
+    }
+"""
 
 
 @module_news.route('', methods=['POST'])
@@ -39,6 +121,48 @@ def post_news():
         return res
 
 
+"""
+@api {get} /news/:news_id Get News
+@apiName GetNews
+@apiGroup News
+
+@apiExample {curl} Example usage:
+    curl -i \
+        -H "Content-Type: application/json" \
+        -X get -d http://localhost/news/3744
+
+@apiParam {Integer} news_id Id of the news.
+
+@apiParamExample {json} Request-Body-Example:
+    {
+        "id": "3744"
+    }
+
+@apiSuccess {DateTime} created_at Created date of the news.
+@apiSuccess {Text} description Description of the news.
+@apiSuccess {Integer} id Id of the news.
+@apiSuccess {String} name Name of the news.
+@apiSuccess {String} name Name of the news.
+@apiSuccess {DateTime} updated_at Updated date of the news.
+
+@apiSuccessExample {json} Success-Response:
+    HTTP/1.1 201 OK
+    {
+        "data": {
+            "created_at": "2018-02-22T14:00:02+00:00",
+            "deleted_at": null,
+            "description": "indonesia election",
+            "id": 3744,
+            "status": "draft",
+            "title": "indonesia election",
+            "topics": [],
+            "updated_at": "2018-02-22T14:00:02+00:00"
+        },
+        "status": "success"
+    }
+"""
+
+
 @module_news.route('/<news_id>', methods=['GET'])
 def get_news(news_id):
     schema = NewsSchema()
@@ -52,6 +176,58 @@ def get_news(news_id):
         res.status_code = 404
 
         return res
+
+
+"""
+@api {put} /news/:news_id Update News
+@apiName PutNews
+@apiGroup News
+
+@apiExample {curl} Example usage:
+    curl -i \
+        -H "Content-Type: application/json" \
+        -X POST -d "{'title': 'indonesia election', 'description': 'indonesia election', 'topics': [4711]}" 
+        http://localhost/news/3744
+
+@apiParam {Integer} news_id Id of the news.
+
+@apiParamExample (Body) {json} Request-Body-Example:
+    {
+        "id": "3744"
+    }
+
+@apiParam (Body) {String} title Title of the news.
+@apiParam (Body) {String} description Description of the news.
+
+@apiParamExample (Body) {json} Request-Body-Example:
+    {
+        "title": "indonesia election",
+        "description": "indonesia election",
+    }
+
+@apiSuccess {DateTime} created_at Created date of the news.
+@apiSuccess {Text} description Description of the news.
+@apiSuccess {Integer} id Id of the news.
+@apiSuccess {String} status Status of the news (draft, publish).
+@apiSuccess {String} title Title of the news.
+@apiSuccess {DateTime} updated_at Updated date of the news.
+
+@apiSuccessExample {json} Success-Response:
+    HTTP/1.1 201 OK
+    {
+        "data": {
+            "created_at": "2018-02-22T14:00:02+00:00",
+            "deleted_at": null,
+            "description": "indonesia election",
+            "id": 3744,
+            "status": "draft",
+            "title": "indonesia election",
+            "topics": [],
+            "updated_at": "2018-02-22T14:00:02+00:00"
+        },
+        "status": "success"
+    }
+"""
 
 
 @module_news.route('/<news_id>', methods=['PUT'])
@@ -75,6 +251,32 @@ def put_news(news_id):
         res.status_code = 400
 
         return res
+
+
+"""
+@api {delete} /news/:news_id Delete News
+@apiName DeleteNews
+@apiGroup News
+
+@apiExample {curl} Example usage:
+    curl -i \
+        -H "Content-Type: application/json" \
+        -X PUT -d http://localhost/news/3744
+
+@apiParam {Integer} news_id Id of the topic.
+
+@apiParamExample {json} Request-Parameter-Example:
+    {
+        "id": 4711
+    }
+
+@apiSuccessExample {json} Success-Response:
+    HTTP/1.1 201 OK
+    {
+        "data": null,
+        "status": "success"
+    }
+"""
 
 
 @module_news.route('/<news_id>', methods=['DELETE'])

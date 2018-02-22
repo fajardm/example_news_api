@@ -6,6 +6,40 @@ from werkzeug.datastructures import MultiDict
 
 module_topics = Blueprint('module_topics', __name__)
 
+"""
+@api {get} /topics List Topics
+@apiName GetTopics
+@apiGroup Topics
+
+@apiExample {curl} Example usage:
+    curl -i \
+        -H "Content-Type: application/json" \
+        -X GET -d http://localhost/topics
+
+@apiSuccess {DateTime} created_at Created date of the topic.
+@apiSuccess {Integer} id Id of the topic.
+@apiSuccess {String} name Name of the topic.
+@apiSuccess {String} name Name of the topic.
+@apiSuccess {DateTime} updated_at Updated date of the topic.
+
+@apiSuccessExample {json} Success-Response:
+    HTTP/1.1 200 OK
+    {
+        "data": [
+            {
+                "created_at": "2018-02-22T13:14:24+00:00",
+                "deleted_at": null,
+                "id": 1,
+                "name": "election",
+                "news_id": [],
+                "updated_at": "2018-02-22T13:14:24+00:00"
+            },
+            {...}
+        ],
+        "status": "success"
+    }
+"""
+
 
 @module_topics.route('', methods=['GET'])
 def get_index():
@@ -14,6 +48,45 @@ def get_index():
     doc_list = topics_list()
 
     return jsonify(status='success', data=schema.dump(doc_list).data)
+
+
+"""
+@api {post} /topics Create Topic
+@apiName PostTopics
+@apiGroup Topics
+
+@apiExample {curl} Example usage:
+    curl -i \
+        -H "Content-Type: application/json" \
+        -X POST -d "{'name': 'election'}" http://localhost/topics
+        
+@apiParam (Body) {String} name Name of the topic.
+
+@apiParamExample (Body) {json} Request-Body-Example:
+    {
+        "name": "party"
+    }
+
+@apiSuccess {DateTime} created_at Created date of the topic.
+@apiSuccess {Integer} id Id of the topic.
+@apiSuccess {String} name Name of the topic.
+@apiSuccess {String} name Name of the topic.
+@apiSuccess {DateTime} updated_at Updated date of the topic.
+
+@apiSuccessExample {json} Success-Response:
+    HTTP/1.1 201 OK
+    {
+        "data": {
+            "created_at": "2018-02-22T13:14:24+00:00",
+            "deleted_at": null,
+            "id": 1,
+            "name": "pemilu",
+            "news_id": [],
+            "updated_at": "2018-02-22T13:14:24+00:00"
+        },
+        "status": "success"
+    }
+"""
 
 
 @module_topics.route('', methods=['POST'])
@@ -35,6 +108,45 @@ def post_topic():
         return res
 
 
+"""
+@api {get} /topics/:topic_id Get Topic
+@apiName GetTopic
+@apiGroup Topics
+
+@apiExample {curl} Example usage:
+    curl -i \
+        -H "Content-Type: application/json" \
+        -X GET -d http://localhost/topics/4711
+        
+@apiParam {Integer} topic_id Id of the topic.
+
+@apiParamExample {json} Request-Parameter-Example:
+    {
+        "id": 4711
+    }
+
+@apiSuccess {DateTime} created_at Created date of the topic.
+@apiSuccess {Integer} id Id of the topic.
+@apiSuccess {String} name Name of the topic.
+@apiSuccess {String} name Name of the topic.
+@apiSuccess {DateTime} updated_at Updated date of the topic.
+
+@apiSuccessExample {json} Success-Response:
+    HTTP/1.1 200 OK
+    {
+        "data": {
+            "created_at": "2018-02-22T13:14:24+00:00",
+            "deleted_at": null,
+            "id": 4711,
+            "name": "election",
+            "news_id": [],
+            "updated_at": "2018-02-22T13:14:24+00:00"
+        },
+        "status": "success"
+    }
+"""
+
+
 @module_topics.route('/<topic_id>', methods=['GET'])
 def get_topic(topic_id):
     schema = TopicsSchema()
@@ -48,6 +160,52 @@ def get_topic(topic_id):
         res.status_code = 404
 
         return res
+
+
+"""
+@api {put} /topics/:topic_id Update Topic
+@apiName PutTopic
+@apiGroup Topics
+
+@apiExample {curl} Example usage:
+    curl -i \
+        -H "Content-Type: application/json" \
+        -X PUT -d "{'name': 'party'}" http://localhost/topics/4711
+        
+@apiParam {Integer} topic_id Id of the topic.
+
+@apiParamExample {json} Request-Parameter-Example:
+    {
+        "id": 4711
+    }
+
+@apiParam {String} topic_id Id of the topic.
+
+@apiParamExample {json} Request-Body-Example:
+    {
+        "name": "party"
+    }
+
+@apiSuccess {DateTime} created_at Created date of the topic.
+@apiSuccess {Integer} id Id of the topic.
+@apiSuccess {String} name Name of the topic.
+@apiSuccess {String} name Name of the topic.
+@apiSuccess {DateTime} updated_at Updated date of the topic.
+
+@apiSuccessExample {json} Success-Response:
+    HTTP/1.1 201 OK
+    {
+        "data": {
+            "created_at": "2018-02-22T13:14:24+00:00",
+            "deleted_at": null,
+            "id": 4711,
+            "name": "party",
+            "news_id": [],
+            "updated_at": "2018-02-22T13:14:24+00:00"
+        },
+        "status": "success"
+    }
+"""
 
 
 @module_topics.route('/<topic_id>', methods=['PUT'])
@@ -70,6 +228,32 @@ def put_topic(topic_id):
         res.status_code = 400
 
         return res
+
+
+"""
+@api {delete} /topics/:topic_id Delete Topic
+@apiName DeleteTopic
+@apiGroup Topics
+
+@apiExample {curl} Example usage:
+    curl -i \
+        -H "Content-Type: application/json" \
+        -X PUT -d http://localhost/topics/4711
+
+@apiParam {Integer} topic_id Id of the topic.
+
+@apiParamExample {json} Request-Parameter-Example:
+    {
+        "id": 4711
+    }
+
+@apiSuccessExample {json} Success-Response:
+    HTTP/1.1 201 OK
+    {
+        "data": null,
+        "status": "success"
+    }
+"""
 
 
 @module_topics.route('/<topic_id>', methods=['DELETE'])
