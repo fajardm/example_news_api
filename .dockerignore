@@ -108,4 +108,3 @@ venv.bak/
 # app
 .idea
 *.db
-migrations
