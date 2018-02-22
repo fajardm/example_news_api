@@ -1,8 +1,8 @@
-from flask import Blueprint, jsonify, request
-from werkzeug.datastructures import MultiDict
 from .news_service import news_list, create_news, show_news, update_news, destroy_news
 from .news_serialize import NewsSchema
 from .news_form import CreateNewsForm
+from flask import Blueprint, jsonify, request
+from werkzeug.datastructures import MultiDict
 
 module_news = Blueprint('module_news', __name__)
 

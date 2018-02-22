@@ -33,7 +33,7 @@ class TopicsTestCase(unittest.TestCase):
         assert obj['status'] == 'success'
 
     def test_should_success_post_topic(self):
-        res = self.app.post('/topics', data=dict(name='topic 1'))
+        res = self.app.post('/topics', data=json.dumps(dict(name='topic 1')), content_type='application/json')
 
         obj = json.loads(res.data)
 
@@ -87,7 +87,8 @@ class TopicsTestCase(unittest.TestCase):
         db.session.add(doc)
         db.session.commit()
 
-        res = self.app.put('/topics/' + str(doc.id), data=dict(name='update name'))
+        res = self.app.put('/topics/' + str(doc.id), data=json.dumps(dict(name='update name')),
+                           content_type='application/json')
 
         obj = json.loads(res.data)
 

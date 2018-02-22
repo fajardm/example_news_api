@@ -1,7 +1,8 @@
-from flask import Blueprint, jsonify, request
 from .topics_service import topics_list, create_topic, show_topic, update_topic, destroy_topic
 from .topics_serialize import TopicsSchema
 from .topics_form import CreateTopicForm
+from flask import Blueprint, jsonify, request
+from werkzeug.datastructures import MultiDict
 
 module_topics = Blueprint('module_topics', __name__)
 
@@ -18,7 +19,7 @@ def get_index():
 @module_topics.route('', methods=['POST'])
 def post_topic():
     schema = TopicsSchema()
-    form = CreateTopicForm(request.form)
+    form = CreateTopicForm(MultiDict(request.get_json()))
 
     if request.method == 'POST' and form.validate():
         topic = create_topic(name=form.name.data)
@@ -52,7 +53,7 @@ def get_topic(topic_id):
 @module_topics.route('/<topic_id>', methods=['PUT'])
 def put_topic(topic_id):
     schema = TopicsSchema()
-    form = CreateTopicForm(request.form)
+    form = CreateTopicForm(MultiDict(request.get_json()))
 
     if request.method == 'PUT' and form.validate():
         doc_topic = update_topic(topic_id, name=form.name.data)
