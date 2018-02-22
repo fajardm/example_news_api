@@ -1,6 +1,7 @@
 import random
 import unittest
 from apps.news.news_model import News
+from apps.topics.topics_model import Topics
 from apps.factory import create_app
 from datetime import datetime
 from faker import Faker
@@ -19,6 +20,7 @@ class NewsTestCase(unittest.TestCase):
 
     def tearDown(self):
         News.query.delete()
+        Topics.query.delete()
 
     def test_should_success_get_index(self):
         doc = News(
@@ -54,10 +56,15 @@ class NewsTestCase(unittest.TestCase):
         assert len(obj2['data']) == 1
 
     def test_should_success_post_news(self):
-        res = self.app.post('/news', data=dict(
+        topic = Topics(name='topic 1')
+        db.session.add(topic)
+        db.session.commit()
+
+        res = self.app.post('/news', data=json.dumps(dict(
             title='title 1',
-            description='description 1'
-        ))
+            description='description 1',
+            topics=[topic.id]
+        )), content_type='application/json')
 
         obj = json.loads(res.data)
 
@@ -122,11 +129,11 @@ class NewsTestCase(unittest.TestCase):
         db.session.add(doc)
         db.session.commit()
 
-        res = self.app.put('/news/' + str(doc.id), data=dict(
+        res = self.app.put('/news/' + str(doc.id), data=json.dumps(dict(
             title='update title',
             description='update description',
             status='publish'
-        ))
+        )), content_type='application/json')
 
         obj = json.loads(res.data)
 

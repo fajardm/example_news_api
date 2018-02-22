@@ -1,4 +1,5 @@
 from .news_repository import NewsRepository, News
+from apps.topics.topics_repository import TopicsRepository
 
 
 def news_list(**criteria):
@@ -12,12 +13,21 @@ def news_list(**criteria):
 
 
 def create_news(**data):
-    doc = NewsRepository(
+    repo = NewsRepository(
         title=data['title'],
         description=data['description'],
         status=data['status'] if data['status'] else 'draft'
-    ).save().get_doc()
-    return doc
+    )
+
+    if data['topics']:
+        for item in data['topics']:
+            topic = TopicsRepository.get_by_id(item).get_doc()
+            if topic:
+                repo.get_doc().topics.append(topic)
+
+    repo.save()
+
+    return repo.get_doc()
 
 
 def show_news(id):
