@@ -42,6 +42,7 @@ class TopicsRepository:
 
         if res.get_doc():
             res.get_doc().deleted_at = datetime.utcnow()
+            db.engine.execute("DELETE FROM news_topics WHERE topics_id = " + id)
             res.save()
 
         return res
