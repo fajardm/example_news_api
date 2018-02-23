@@ -45,7 +45,18 @@ def update_news(id, **data):
     if repo.get_doc():
         repo.get_doc().title = data['title']
         repo.get_doc().description = data['description']
-        repo.get_doc().status = data['status'] if data['status'] else doc.status
+        repo.get_doc().status = data['status'] if data['status'] else repo.get_doc().status
+
+        for topic in repo.get_doc().topics:
+            if topic.id not in data['topics']:
+                repo.get_doc().topics.remove(topic)
+
+        if data['topics']:
+            for item in data['topics']:
+                topic = TopicsRepository.get_by_id(item).get_doc()
+                if topic:
+                    repo.get_doc().topics.append(topic)
+
         repo.save()
 
     return repo.get_doc()

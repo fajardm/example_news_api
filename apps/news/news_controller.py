@@ -250,8 +250,12 @@ def put_news(news_id):
     form = CreateNewsForm(MultiDict(request.get_json()))
 
     if request.method == 'PUT' and form.validate():
-        doc_news = update_news(news_id, title=form.title.data, description=form.description.data,
-                               status=form.status.data)
+        doc_news = update_news(news_id,
+                               title=form.title.data,
+                               description=form.description.data,
+                               status=form.status.data,
+                               topics=form.topics.data
+                               )
 
         if doc_news:
             return jsonify(status='success', data=schema.dump(doc_news).data)

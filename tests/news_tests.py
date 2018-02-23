@@ -26,6 +26,9 @@ class NewsTestCase(unittest.TestCase):
         app.app_context().push()
         self.app = app.test_client()
 
+        News.query.delete()
+        Topics.query.delete()
+
     def tearDown(self):
         News.query.delete()
         Topics.query.delete()
@@ -142,18 +145,23 @@ class NewsTestCase(unittest.TestCase):
         assert obj2['error'] == 'not found'
 
     def test_should_success_put_news(self):
+        topic1 = create_topic('topic1')
+        topic2 = create_topic('topic2')
+
         doc = News(
             title=fake.sentence(nb_words=6, variable_nb_words=True, ext_word_list=None),
             description=fake.text(),
             status=random.choice(['draft', 'publish'])
         )
+        doc.topics.append(topic1)
         db.session.add(doc)
         db.session.commit()
 
         res = self.app.put('/news/' + str(doc.id), data=json.dumps(dict(
             title='update title',
             description='update description',
-            status='publish'
+            status='publish',
+            topics=[topic2.id]
         )), content_type='application/json')
 
         obj = json.loads(res.data)
@@ -163,6 +171,8 @@ class NewsTestCase(unittest.TestCase):
         assert obj['data']['title'] == 'update title'
         assert obj['data']['description'] == 'update description'
         assert obj['data']['status'] == 'publish'
+        assert len(obj['data']['topics']) == 1
+        assert obj['data']['topics'][0] == topic2.id
 
     def test_should_success_delete_news(self):
         doc = News(
