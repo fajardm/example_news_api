@@ -6,6 +6,6 @@ class CreateTopicForm(Form):
     name = StringField('Name', [validators.DataRequired()])
 
     def validate_name(form, field):
-        doc = TopicsRepository.get_by_id(field.data).get_doc()
+        doc = TopicsRepository.query().filter_by(name=field.data).first()
         if doc:
             raise ValidationError('Name must be unique')

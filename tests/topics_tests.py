@@ -15,6 +15,8 @@ class TopicsTestCase(unittest.TestCase):
         app.app_context().push()
         self.app = app.test_client()
 
+        Topics.query.delete()
+
     def tearDown(self):
         Topics.query.delete()
 
@@ -49,6 +51,18 @@ class TopicsTestCase(unittest.TestCase):
         assert res.status_code == 400
         assert obj['status'] == 'fail'
         assert obj['data']['validations']['name'] is not None
+
+        doc = Topics(name='topic 2')
+        db.session.add(doc)
+        db.session.commit()
+
+        res2 = self.app.post('/topics', data=json.dumps(dict(name='topic 2')), content_type='application/json')
+
+        obj2 = json.loads(res2.data)
+
+        assert res2.status_code == 400
+        assert obj2['status'] == 'fail'
+        assert obj2['data']['validations']['name'] is not None
 
     def test_should_success_get_topic(self):
         doc = Topics(
