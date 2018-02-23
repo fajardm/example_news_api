@@ -1,0 +1,10 @@
+flask
+Flask-WTF
+pymysql
+Flask-SQLAlchemy
+Flask-Migrate
+flask-marshmallow
+marshmallow-sqlalchemy
+pytest
+Faker
+gunicorn
