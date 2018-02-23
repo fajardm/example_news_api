@@ -10,11 +10,16 @@
 2. API DOC `https://example-news-api-doc.herokuapp.com/`
 
 ## How to
-1. Run apidoc
-2. Run dockerized
-3. Run migration
-4. API host `http://localhost:3000`
-5. Apidoc host `http://localhost:4000`
+1. You must change the following files based on your environment. Specific needs if deployed in Heroku. 
+`apidoc/default.conf.template`
+`apidoc/Dockerfile`
+`Dockerfile`
+`config.cfg.example`
+2. Run apidoc
+3. Run dockerized
+4. Run migration
+5. API host `http://localhost:3000`
+6. Apidoc host `http://localhost:4000`
 
 ## Dockerized
 1. Configuration
