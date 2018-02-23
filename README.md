@@ -6,7 +6,8 @@
 5. [Generate Apidoc](generate-apidoc)
 
 ## Demo
-Comming soon
+1. API `https://example-news-api.herokuapp.com/ping`
+2. API DOC `https://example-news-api-doc.herokuapp.com/`
 
 ## How to
 1. Run apidoc

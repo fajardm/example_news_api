@@ -7,5 +7,5 @@ class CreateTopicForm(Form):
 
     def validate_name(form, field):
         doc = TopicsRepository.get_by_id(field.data).get_doc()
-        if doc is None:
+        if doc:
             raise ValidationError('Name must be unique')
