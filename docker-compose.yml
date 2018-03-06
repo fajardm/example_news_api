@@ -1,9 +1,10 @@
 version: '3'
 services:
   db:
+    container_name: example_news_api_db
     image: mysql
     ports:
-      - "3306"
+      - 3306
     restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=secret
@@ -11,19 +12,27 @@ services:
       - MYSQL_USER=secret
       - MYSQL_PASSWORD=secret
   api:
-    build: .
-    image: "example_news_api:example_news_api"
+    container_name: example_news_api
+    build:
+      context: ./
+      dockerfile: ${DOCKERFILE_API}
+    image: example_news_api:example_news_api
     ports:
-      - "3000:3000"
+      - 3000:3000
     depends_on:
       - db
     links:
       - db
     restart: always
     expose:
-      - "3000"
+      - 3000
+    environment:
+      - FLASK_APP=run.py
   apidoc:
-    build: ./apidoc
+    container_name: example_news_apidoc
+    build:
+      context: ./apidoc
+      dockerfile: ${DOCKERFILE_APIDOC}
     ports:
-      - "4000:80"
-    image: "apidoc:apidoc"
+      - 4000:80
+    image: apidoc:apidoc
