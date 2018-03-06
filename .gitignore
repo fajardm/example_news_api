@@ -105,5 +105,5 @@ ENV/
 *.db
 config.cfg
 apidoc/*
-!Dockerfile
-!apidoc/default.conf.template
+!apidoc/Dockerfile*
+!apidoc/default.conf.template-stag
