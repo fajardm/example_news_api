@@ -7,21 +7,29 @@ from helpers.marshmallow import ma
 
 
 def create_app(config=None):
-    app = Flask('apps')
+    # instantiate the app
+    app = Flask(__name__)
 
+    # set config
     app.config.update(config or {})
     app.config.from_pyfile('../config.cfg', silent=True)
 
+    # set up extensions
     db.init_app(app)
-    Migrate(app, db)
     ma.init_app(app)
+    Migrate(app, db)
 
+    # register blueprints
     register_blueprints(app)
 
+    # endpoint to ping
     @app.route('/ping')
     def get_ping():
         res = jsonify(status='success', data={'message': 'pong'})
         return res
+
+    # shell context for flask cli
+    app.shell_context_processor({'app': app, 'db': db})
 
     return app
 
