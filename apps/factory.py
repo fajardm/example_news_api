@@ -6,12 +6,11 @@ from helpers.database import db
 from helpers.marshmallow import ma
 
 
-def create_app(config=None):
+def create_app():
     # instantiate the app
     app = Flask(__name__)
 
     # set config
-    app.config.update(config or {})
     app.config.from_pyfile('../config.cfg', silent=True)
 
     # set up extensions
