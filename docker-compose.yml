@@ -26,6 +26,8 @@ services:
     restart: always
     expose:
       - 3000
+    environment:
+      - FLASK_APP=run.py
   apidoc:
     container_name: example_news_apidoc
     build:

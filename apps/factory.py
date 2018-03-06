@@ -29,7 +29,7 @@ def create_app(config=None):
         return res
 
     # shell context for flask cli
-    app.shell_context_processor({'app': app, 'db': db})
+    app.shell_context_processor({'app': app})
 
     return app
 
