@@ -24,10 +24,29 @@ Copy paste `config.cfg.example` to ` config.cfg` and change variable in the file
 2. Docker Compose
 
 ```
-DOCKERFILE_API=Dockerfile-dev DOCKERFILE_APIDOC Dockerfile-dev docker-compose up --build -d
+DOCKERFILE_API=Dockerfile-dev DOCKERFILE_APIDOC=Dockerfile-dev docker-compose up --build -d
 ```
 
-You can change `Dockerfile-dev` based on your environment.
+3. Database init
+
+```
+DOCKERFILE_API=Dockerfile-dev DOCKERFILE_APIDOC=Dockerfile-dev docker-compose run api python ./apps/manage.py db init
+```
+
+3. Database migrate
+
+```
+DOCKERFILE_API=Dockerfile-dev DOCKERFILE_APIDOC=Dockerfile-dev docker-compose run api python ./apps/manage.py db migrate
+```
+
+3. Database upgrade
+
+```
+DOCKERFILE_API=Dockerfile-dev DOCKERFILE_APIDOC=Dockerfile-dev docker-compose run api python ./apps/manage.py db migrate
+```
+
+* change `DOCKERFILE_API` and `DOCKERFILE_APIDOC` based on your environment
+* read more about flask migration [here](https://flask-migrate.readthedocs.io/en/latest/)
 
 ## Migration
 **Migration in docker**

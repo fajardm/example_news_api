@@ -5,8 +5,11 @@ from flask_migrate import Migrate
 from helpers.database import db
 from helpers.marshmallow import ma
 
+# instantiate the extensions
+migrate = Migrate()
 
-def create_app():
+
+def create_app(script_info=None):
     # instantiate the app
     app = Flask(__name__)
 
@@ -16,7 +19,7 @@ def create_app():
     # set up extensions
     db.init_app(app)
     ma.init_app(app)
-    Migrate(app, db)
+    migrate.init_app(app, db)
 
     # register blueprints
     register_blueprints(app)
@@ -28,7 +31,7 @@ def create_app():
         return res
 
     # shell context for flask cli
-    app.shell_context_processor({'app': app})
+    app.shell_context_processor({'app': app, 'db': db})
 
     return app
 
