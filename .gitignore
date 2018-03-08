@@ -107,3 +107,4 @@ config.cfg
 apidoc/*
 !apidoc/Dockerfile*
 !apidoc/default.conf.template-stag
+!apidoc/default.conf.template-dev
