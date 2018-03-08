@@ -108,3 +108,5 @@ venv.bak/
 # app
 .idea
 *.db
+config.cfg.example
+README.md
