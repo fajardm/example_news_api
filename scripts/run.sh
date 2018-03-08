@@ -8,6 +8,4 @@ done
 
 echo "PostgreSQL started"
 
-#export FLASK_APP=run.py && flask db init && flask db migrate && flask db upgrade
-
-python run.py
+python ./scripts/manage.py start

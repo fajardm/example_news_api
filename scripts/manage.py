@@ -1,10 +1,15 @@
 import unittest
 
-from apps.factory import create_app
+from apps import create_app, run
 from flask.cli import FlaskGroup
 
 app = create_app()
 cli = FlaskGroup(create_app=create_app)
+
+
+@cli.command()
+def start():
+    run()
 
 
 @cli.command()

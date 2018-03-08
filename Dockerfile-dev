@@ -1,15 +1,22 @@
 FROM python:3.6
 
+# install dependencies
 RUN apt-get update -yqq \
   && apt-get install -yqq --no-install-recommends \
     netcat \
   && apt-get -q clean
 
+# create working dir
 ADD . /app
 WORKDIR /app
 
+# ensure python to target this app
+ENV PATH=$PATH:/app
+ENV PYTHONPATH /app
+
+# install requirements
 RUN pip install -r requirements.txt
 
 EXPOSE 3000
 
-CMD ["./run.sh"]
+CMD ["./scripts/run.sh"]
