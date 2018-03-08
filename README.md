@@ -5,6 +5,9 @@
 4. [Migration](#migration)
 5. [Generate Apidoc](generate-apidoc)
 
+* `Staging` in this project mean is heroku environment
+* If you want deploy to heroku, rename all Dockerfile with postfix `-stag` to `Dockerfile`
+
 ## Demo
 1. API `https://example-news-api.herokuapp.com/ping`
 2. API DOC `https://example-news-api-doc.herokuapp.com/`
